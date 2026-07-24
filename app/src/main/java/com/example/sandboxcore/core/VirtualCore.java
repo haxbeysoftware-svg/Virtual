@@ -22,12 +22,20 @@ public class VirtualCore {
         return sInstance;
     }
 
+    private String mLastStatus = "Henüz başlatılmadı";
+
+    public String getLastStatus() {
+        return mLastStatus;
+    }
+
     public void startup(Context context) {
         mContext = context.getApplicationContext();
         try {
             hookInstrumentation();
+            mLastStatus = "BAŞARILI: Instrumentation hook kuruldu.";
             Log.i(TAG, "VirtualCore initialized successfully");
         } catch (Exception e) {
+            mLastStatus = "HATA: " + e.getClass().getSimpleName() + " - " + e.getMessage();
             Log.e(TAG, "Failed to hook instrumentation", e);
         }
     }
