@@ -1,6 +1,5 @@
 package com.example.sandboxcore.core;
 
-import android.app.ActivityThread;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
@@ -38,21 +37,19 @@ public class VirtualCore {
     }
 
     private void hookInstrumentation() throws Exception {
-        Object activityThread = getActivityThread();
+        Class<?> activityThreadClass = Class.forName("android.app.ActivityThread");
 
-        Field instrumentationField = ActivityThread.class.getDeclaredField("mInstrumentation");
+        Method currentActivityThreadMethod =
+                activityThreadClass.getDeclaredMethod("currentActivityThread");
+        currentActivityThreadMethod.setAccessible(true);
+        Object activityThread = currentActivityThreadMethod.invoke(null);
+
+        Field instrumentationField = activityThreadClass.getDeclaredField("mInstrumentation");
         instrumentationField.setAccessible(true);
 
         mOriginalInstrumentation = (Instrumentation) instrumentationField.get(activityThread);
         mHookInstrumentation = new VAInstrumentation(mOriginalInstrumentation);
 
         instrumentationField.set(activityThread, mHookInstrumentation);
-    }
-
-    private Object getActivityThread() throws Exception {
-        Method currentActivityThreadMethod =
-                ActivityThread.class.getDeclaredMethod("currentActivityThread");
-        currentActivityThreadMethod.setAccessible(true);
-        return currentActivityThreadMethod.invoke(null);
     }
 }
