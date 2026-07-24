@@ -2,23 +2,23 @@ package com.example.sandboxcore;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+import com.example.sandboxcore.core.VirtualCore;
 
-    private static final String TAG = "MainActivity";
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TextView tv = new TextView(this);
-        tv.setText("SandboxCore çalışıyor. Logcat'e bakın.");
-        tv.setTextSize(18);
+        tv.setTextSize(16);
         tv.setPadding(32, 64, 32, 32);
-        setContentView(tv);
 
-        Log.i(TAG, "MainActivity started");
+        String status = VirtualCore.get().getLastStatus();
+        tv.setText("SandboxCore Durumu:\n\n" + status);
+
+        setContentView(tv);
     }
 }
