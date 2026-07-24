@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+
+    <application
+        android:name=".core.SandboxApplication"
+        android:label="SandboxCore"
+        android:allowBackup="false">
+
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Stub Activity havuzu: farklı launchMode/taskAffinity kombinasyonları
+             hedef uygulamaların kendi Activity davranışlarını taklit edebilmesi için -->
+        <activity android:name=".core.StubActivity"
+            android:exported="false"
+            android:launchMode="standard"
+            android:theme="@android:style/Theme.NoDisplay" />
+
+        <activity android:name=".core.StubActivitySingleTop"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoDisplay" />
+
+        <activity android:name=".core.StubActivitySingleTask"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoDisplay" />
+
+    </application>
+</manifest>
